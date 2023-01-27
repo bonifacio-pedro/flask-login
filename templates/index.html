@@ -8,9 +8,13 @@
 </head>
 <body>
     <p>
-        Hello {{ user_loged }}
-        <a href="/sign">Cadastro</a>
-        <a href="/login">Entrar</a>
+        {% if user_loged %}
+            Opa! {{ user_loged }}
+            <a href="/logout">Sair</a>
+        {% else %}
+            <a href="/sign">Cadastro</a>
+            <a href="/login">Entrar</a>
+        {% endif %}  
     </p>
 </body>
 </html>

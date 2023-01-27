@@ -10,6 +10,12 @@
     <div class="container-sm p-5 my-5 bg-dark text-white rounded-5 ">
         <div class="row">
             <form method="POST" >
+                {% if in_creation %}
+                    <div class="col mt-3">
+                        <span>Agora entre na sua conta!</span>
+                    </div>
+                {% endif %}
+                
                 <div class="col mb-2 mt-2">
                     <label class="form-label">Nome de usuário:</label>
                     <input type="text" name="username" required class="form-control">

@@ -12,41 +12,70 @@ session = Session() # Criando ponteiro
 
 @app.route("/")
 def index():
+    """
+    Verificando se existe uma sessão de login ativa, se sim, enviando ao HTML para verificação de conteudo mostrado
+    """
     if 'user_loged' in ss:
-        user = ss['user_loged']
+        user = ss['user_loged'] # Pegando nome do user em sessão
         return render_template('index.html', user_loged=user)
     else:
         return render_template('index.html')
 
+#
+# Área de cadastro 
+#
 @app.route("/sign")
 def sign():
-    return render_template("sign.html")
+    if not 'user_loged' in ss:
+        return render_template("sign.html")
+    else:
+        return redirect(url_for('index'))
 
 @app.route("/sign", methods=['POST'])
 def sign_add_user():
+    """
+    Adicionando cadastro ao banco de dados
+    """
     if request.method == 'POST':
         user = User(username=request.form['username'],passwd=request.form['passwd'])
         session.add(user)
         session.commit()
-        return redirect(url_for('index'))
+        ss['user_creating'] = True
+        return redirect(url_for('login'))
 
+#
+# Área de login
+#
 @app.route("/login")
 def login():
-    return render_template("login.html")
+    if not 'user_loged' in ss:
+        if 'user_creating' in ss:
+            return render_template("login.html", in_creation=ss['user_creating'])
+        else:
+            return render_template("login.html")
+    else:
+        return redirect(url_for("index"))
 
 @app.route("/login", methods=['POST'])
 def login_verify_user():
+    """
+    Verificando e procurando o username requirido no banco de dados, se tiver, verificar a senha utilizando o hash e redirecionando com uma nova sessão aberta.
+    """
     if request.method == 'POST':
         user = session.query(User).filter_by(username=request.form['username']).first()
         if user and user.verify_passwd(request.form['passwd']):
             ss['user_loged'] = user.username
+            ss.pop('user_creating', None)
             return redirect(url_for('index'))
         else:
             return render_template("login.html", is_logged=True)
 
+#
+# Área de logout
+#
 @app.route("/logout")
 def logout():
-    ss.pop('user_loged',None)
+    ss.pop('user_loged',None) # Apenas fechando a sessão, modificando a variável para None
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
