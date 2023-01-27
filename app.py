@@ -75,6 +75,9 @@ def login_verify_user():
 #
 @app.route("/admin")
 def admin():
+    """
+    Verificando se a sessão atual é de um administrador, e enviando query geral para o HTML
+    """
     if 'user_loged' in ss and ss['user_loged'] == 'admin':
         users = session.query(User).all()
         return render_template("admin.html", users=users)
@@ -88,7 +91,6 @@ def admin_delete(id):
         session.commit()
         return redirect(url_for('admin'))
     
-
 #
 # Área de logout
 #
