@@ -10,7 +10,25 @@ session = Session() # Criando ponteiro
 
 @app.route("/")
 def index():
-    return render_template('index.html')
+    user = "Pedro"
+    return render_template('index.html', user=user)
+
+@app.route("/sign")
+def sign():
+    return render_template("sign.html")
+
+@app.route("/sign", methods=['POST'])
+def sign_add_user():
+    if request.method == 'POST':
+        user = User(username=request.form['username'],passwd=request.form['passwd'])
+        session.add(user)
+        session.commit()
+        return redirect(url_for('index'))
+
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
 
 if __name__ == '__main__':
     app.run(debug=True)
