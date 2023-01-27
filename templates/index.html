@@ -7,14 +7,24 @@
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <p>
-        {% if user_loged %}
-            Opa! {{ user_loged }}
-            <a href="/logout">Sair</a>
-        {% else %}
-            <a href="/sign">Cadastro</a>
-            <a href="/login">Entrar</a>
-        {% endif %}  
-    </p>
+    <div class="container-sm p-5 my-5 bg-dark text-white rounded-5">
+        <div class="row">
+            {% if user_loged %}
+                <div class="col d-grid">
+                    <p class="display-6">Opa! Seja bem vindo(a) {{ user_loged }}</p>
+                    <a class="btn btn-light pd-3" href="/logout">Sair</a>
+                </div>
+            {% else %}
+                <p class="display-6">Olá! O que deseja?</p>
+                <div class="col d-grid">
+                    <a class="btn btn-light pd-3" href="/sign">Cadastrar</a>
+                </div>
+                <div class="col d-grid">
+                    <a class="btn btn-light pd-3 btn-block" href="/login">Entrar</a>
+                </div>
+            {% endif %}  
+        </div>
+    </div>
+    
 </body>
 </html>
