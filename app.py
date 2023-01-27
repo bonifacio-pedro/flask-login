@@ -40,7 +40,7 @@ def sign_add_user():
         user = User(username=request.form['username'],passwd=request.form['passwd'])
         session.add(user)
         session.commit()
-        ss['user_creating'] = True
+        ss['user_creating'] = True # Para o span
         return redirect(url_for('login'))
 
 #
@@ -50,7 +50,7 @@ def sign_add_user():
 def login():
     if not 'user_loged' in ss:
         if 'user_creating' in ss:
-            return render_template("login.html", in_creation=ss['user_creating'])
+            return render_template("login.html", in_creation=ss['user_creating']) # Para modificar o span e avisar para logar.
         else:
             return render_template("login.html")
     else:
@@ -64,8 +64,8 @@ def login_verify_user():
     if request.method == 'POST':
         user = session.query(User).filter_by(username=request.form['username']).first()
         if user and user.verify_passwd(request.form['passwd']):
-            ss['user_loged'] = user.username
-            ss.pop('user_creating', None)
+            ss['user_loged'] = user.username # Iniciando sesão nova
+            ss.pop('user_creating', None) # Para mudar o span de "agora logue"
             return redirect(url_for('index'))
         else:
             return render_template("login.html", is_logged=True)
