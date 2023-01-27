@@ -24,6 +24,11 @@
                 <div class="col mt-3">
                     <span>Não é cadastrado? Faça seu <a href="/sign" class="link">cadastro</a></span>
                 </div>
+                {% if is_logged %}
+                    <div class="col mt-3">
+                        <span>Usuário ou senha não encontrados!</span>
+                    </div>
+                {% endif %}
             </form>
         </div>
     </div>
