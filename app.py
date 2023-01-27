@@ -71,6 +71,25 @@ def login_verify_user():
             return render_template("login.html", is_logged=True)
 
 #
+# Admin
+#
+@app.route("/admin")
+def admin():
+    if 'user_loged' in ss and ss['user_loged'] == 'admin':
+        users = session.query(User).all()
+        return render_template("admin.html", users=users)
+    else:
+        return redirect(url_for("index"))
+@app.route("/admin/delete/<id>")
+def admin_delete(id):
+    if 'user_loged' in ss and ss['user_loged'] == 'admin':
+        user = session.query(User).filter_by(id=id).one()
+        session.delete(user)
+        session.commit()
+        return redirect(url_for('admin'))
+    
+
+#
 # Área de logout
 #
 @app.route("/logout")
